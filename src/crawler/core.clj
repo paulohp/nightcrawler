@@ -1,13 +1,15 @@
 (ns crawler.core
   (:gen-class)
   (:use [org.httpkit.client :as http])
-  (:use [pl.danieljanus.tagsoup :as parse])
+  (:use clojure.java.io) 
   )
 
 (defn -main
   "I don't do a whole lot ... yet."
   [& args]
-  (let [response1(http/get "http://paulopires.me")]
-  (parse (@response1))
+  (let [response1(http/get "http://americanas.com")]
+  (with-open [wrtr (writer "/tmp/americanas.html")]
+    (.write wrtr (:body @response1))
+    )
   )
 )
