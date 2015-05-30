@@ -8,7 +8,9 @@
   "I don't do a whole lot ... yet."
   [& args]
   (let [response1(http/get "http://americanas.com")]
-  (with-open [wrtr (writer "/tmp/americanas.html")]
+  (def date (java.util.Date.))
+  (def fileName (str "/tmp/" date "-americanas.html" ))
+  (with-open [wrtr (writer fileName)]
     (.write wrtr (:body @response1))
     )
   )
