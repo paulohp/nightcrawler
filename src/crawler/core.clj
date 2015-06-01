@@ -10,11 +10,7 @@
 
 (defn -main
   "I don't do a whole lot ... yet."
-  [& args]
-  (let [conn (mg/connect)
-        db   (mg/get-db conn "crawler")
-        fs   (mg/get-gridfs conn "crawler")
-        ])
+  [& args] 
   (let [response1(http/get "http://americanas.com")]
   (def date (java.util.Date.))
   (def fileName (str "/tmp/" date "-americanas.html" ))
@@ -22,5 +18,15 @@
     (.write wrtr (:body @response1))
     )
   )
+  
+  (let [conn (mg/connect)
+        db   (mg/get-db conn "crawler")
+        fs   (mg/get-gridfs conn "crawler")
+        ]
+        (store-file (make-input-file fs fileName)
+              (filename (str date "-americanas.html"))
+              (metadata {:format "html"})
+              (content-type "text/html")
+              ))
   
 )
