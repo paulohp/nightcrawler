@@ -1,7 +1,8 @@
 (ns crawler.core
   (:gen-class)
   (:use [org.httpkit.client :as http])
-  (:use clojure.java.io)
+  (:use [clojure.java.io :only [output-stream, writer]])
+  (:use pl.danieljanus.tagsoup)
   (:require [monger.core :as mg]
             [monger.gridfs :refer [store-file make-input-file filename content-type metadata]]
             )
@@ -17,16 +18,15 @@
   (with-open [wrtr (writer fileName)]
     (.write wrtr (:body @response1))
     )
+  (def html-parsed (parse-string (:body @response1)))
+  (println html-parsed :a)
   )
   
   (let [conn (mg/connect)
         db   (mg/get-db conn "crawler")
-        fs   (mg/get-gridfs conn "crawler")
-        ]
+        fs   (mg/get-gridfs conn "crawler")]
         (store-file (make-input-file fs fileName)
               (filename (str date "-americanas.html"))
               (metadata {:format "html"})
-              (content-type "text/html")
-              ))
-  
+              (content-type "text/html")))
 )
