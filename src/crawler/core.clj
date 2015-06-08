@@ -3,6 +3,7 @@
   (:use [org.httpkit.client :as http])
   (:use [clojure.java.io :only [output-stream, writer]])
   (:use pl.danieljanus.tagsoup)
+  (:require [hiccup-find.core :refer :all])
   (:require [monger.core :as mg]
             [monger.gridfs :refer [store-file make-input-file filename content-type metadata]]
             )
@@ -19,7 +20,7 @@
     (.write wrtr (:body @response1))
     )
   (def html-parsed (parse-string (:body @response1)))
-  (println html-parsed :a)
+  (fact hiccup-find html-parsed)
   )
   
   (let [conn (mg/connect)
