@@ -19,9 +19,7 @@
   (with-open [wrtr (writer fileName)]
     (.write wrtr (:body @response1))
     )
-  (def html-parsed (parse-string (:body @response1)))
-  (fact hiccup-find html-parsed)
-  )
+  (def html-parsed (parse-string (:body @response1))))
   
   (let [conn (mg/connect)
         db   (mg/get-db conn "crawler")
